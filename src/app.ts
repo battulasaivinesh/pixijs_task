@@ -21,26 +21,15 @@ class Game {
   fpsMeter: PIXI.Text;
 
   constructor() {
+
     // instantiate app
     this.app = new Application({
       width: 1280,
       height: 720,
-      backgroundColor: 0x1099bb // light blue
+      backgroundColor: 0x575757 // light blue
     });
 
-
-
-    this.scenes = [];
-    this.scenes.push(new Part1());
-    this.scenes.push(new Part2());
-    this.scenes.push(new Part3());
-    this.currentScene = -1;
-
     this.app.renderer.resize(window.innerWidth, window.innerHeight);
-
-    
-
-    this.UIContainer = new Container();
 
     // create view in DOM
     document.body.appendChild(this.app.view);
@@ -53,17 +42,26 @@ class Game {
     loader.add('button2', '/assets/img/button2.png');
     loader.add('button3', '/assets/img/button3.png');
     loader.add('backButton', '/assets/img/backButton.png');
-    loader.add('particle1', '/assets/img/particle1.png');
-    loader.add('particle2', '/assets/img/particle2.png');
+    loader.add('particle1', '/assets/fire/particle1.png');
+    loader.add('particle2', '/assets/fire/particle2.png');
+    loader.add('particle3', '/assets/fire/particle3.png');
+    loader.add('particle4', '/assets/fire/particle4.png');
+    loader.add('particle5', '/assets/fire/particle5.png');
+    loader.add('particle6', '/assets/fire/particle6.png');
+    loader.add('particle7', '/assets/fire/particle7.png');
+    loader.add('fireBase', '/assets/fire/fireBase.png');
     loader.add('/assets/spritesheet/emoji.json');
-    this.setupMainScene.bind(this);
-    this.viewMain.bind(this);
+		
+		// bind this
+		this.setupMainScene.bind(this);
+
     // then launch app
     loader.load(this.setup.bind(this));
   }
 
   setupMainScene(): void {
 
+		// Main UI Background
     let back = new PIXI.Sprite(PIXI.Texture.from("back"));
     back.anchor.set(0.5);
     back.x = this.app.renderer.width * 0.5;
@@ -71,13 +69,17 @@ class Game {
     back.scale.set(window.responsiveRatio);
     
     this.UIContainer.addChild(back);
-
-    let buttons = new Container();
-
+    
+		// FPS Meter
     this.fpsMeter = new PIXI.Text("FPS: 60.0", {fontFamily : 'Arial', fontSize: 30, fill : 0xffffff, align : 'center'});
     this.fpsMeter.x = this.app.renderer.width - 150;
-    this.fpsMeter.y = this.app.renderer.height - 70;
+		this.fpsMeter.y = this.app.renderer.height - 70;
+		
+		this.app.ticker.add( function() : void {
+      this.fpsMeter.text = "FPS: " + Math.round(this.app.ticker.FPS*100)/100;
+    }.bind(this))
 
+		// Universal Back Button
     this.backButton = new Sprite(PIXI.Texture.from("backButton"));
 		this.backButton.anchor.set(0.5);
 		this.backButton.x = 0.1*this.app.renderer.width;
@@ -88,22 +90,24 @@ class Game {
     
     this.backButton.visible = false;
 
-		this.backButton.on("pointerup", function():void{
+		this.backButton.on("pointerup", function() : void {
       this.backButton.scale.set(window.responsiveRatio);
 			this.scenes[this.currentScene].clean();
-      this.UIContainer.visible = true;
+			this.UIContainer.visible = true;
+			this.currentScene = -1;
       this.backButton.visible = false;
     }.bind(this));
     
-    this.backButton.on("pointerdown", function():void{
+    this.backButton.on("pointerdown", function() : void {
       this.backButton.scale.set(window.responsiveRatio*0.9);
     }.bind(this))
 
     this.app.stage.addChild(this.backButton);
     
-    
-
-    for ( let i = 0; i < 3; i++ ){
+		
+		// Level Buttons
+		let buttons = new Container();
+    for (let i = 0; i < 3; i++) {
       let button = new PIXI.Sprite(PIXI.Texture.from("button" + (i+1)));
       button.anchor.set(0.5);
       button.x = this.app.renderer.width * 0.5;
@@ -112,11 +116,11 @@ class Game {
       button.interactive = true;
       button.buttonMode = true;
 
-      button.on('pointerup', function(index: number): void{
+      button.on('pointerup', function(index: number) : void {
         buttons.getChildAt(index).scale.set(window.responsiveRatio);
         this.UIContainer.visible = false;
         this.backButton.visible = true;
-        switch(index){
+        switch (index) {
           case 0:
             this.scenes[0].setup(this.app);
             this.currentScene = 0;
@@ -128,25 +132,20 @@ class Game {
             this.app.stage.addChild(this.scenes[1].main);
             break;
           case 2:
-            this.scenes[2].setup(this.app);
+            this.scenes[2].setup();
             this.currentScene = 2;
             this.app.stage.addChild(this.scenes[2].main);
             break;
         }
       }.bind(this,i))
 
-      button.on('pointerdown', function(index: number): void{
+      button.on('pointerdown', function(index: number) : void {
         buttons.getChildAt(index).scale.set(window.responsiveRatio*0.9);
       }.bind(this,i))
 
       buttons.addChild(button);
     }
 
-    this.app.ticker.add( function() {
-      this.fpsMeter.text = "FPS: " + Math.round(this.app.ticker.FPS*100)/100;
-    }.bind(this))
-
-    
     
     this.UIContainer.addChild(buttons);
 
@@ -154,13 +153,16 @@ class Game {
     this.app.stage.addChild(this.fpsMeter);
   }
 
-  viewMain(): void {
-    console.log("Hello");
-    this.UIContainer.visible = true;
-  }
-
   
   setup(): void {
+
+		// Instantiate Scenes
+    this.scenes = [];
+    this.scenes.push(new Part1());
+    this.scenes.push(new Part2());
+    this.scenes.push(new Part3());
+    this.currentScene = -1;
+    this.UIContainer = new Container();
     
     this.setupMainScene();
 

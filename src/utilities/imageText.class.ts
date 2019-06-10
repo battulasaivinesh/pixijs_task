@@ -10,18 +10,25 @@ export class ImageText {
 
   constructor(list: Array<Data>, style?: Object){
 		
+		// Main Container
 		this.main = new Container();
+
+		// Font Style
 		this.style = style || {};
+
+		// Set Font Height
 		let text = new Text("Test12321", this.style);
 		this.main.addChild(text);
 		this.height = this.main.height;
 		this.main.destroy();
 		this.main = new Container();
 		
-		
 		this.currentPosition = 0;
+		// Sort list based on orderId
 		list.sort(this.dynamicSort("orderId"));
-		for(let i in list){
+
+		// Parse the list to create text and images
+		for (let i in list) {
 			if (list[i].type == "text") {
 				this.addText(list[i].data);
 			} else if (list[i].type == "image") {
@@ -31,15 +38,9 @@ export class ImageText {
 		
 		this.addText.bind(this);
 		this.addSprite.bind(this);
-		this.setup.bind(this);
-		this.setup();
 
-		
   }
 
-  setup(): void {
-	
-  }
 
   addText(data: string): void {
 		let text = new Text(data, this.style);
@@ -60,17 +61,17 @@ export class ImageText {
 
     return function (a: any,b: any) {
 			if(sortOrder == -1){
-				if(b[property] < a[property]){
+				if (b[property] < a[property]) {
 					return -1;
-				} else if(b[property] > a[property]){
+				} else if (b[property] > a[property]) {
 					return 1;
 				} else {
 					return 0;
 				}
 			} else {
-				if(b[property] < a[property]){
+				if (b[property] < a[property]) {
 					return 1;
-				} else if(b[property] > a[property]){
+				} else if (b[property] > a[property]) {
 					return -1;
 				} else {
 					return 0;

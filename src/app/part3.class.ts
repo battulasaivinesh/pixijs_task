@@ -1,4 +1,4 @@
-import {  Container, Application } from 'pixi.js';
+import {  Container, Sprite } from 'pixi.js';
 /// <reference path="node_modules/pixi-particles/ambient.d.ts" />
 var particles = require('pixi-particles');
 
@@ -6,38 +6,43 @@ var particles = require('pixi-particles');
 export class Part3 {
 	main: Container;
 	particlesContainer: Container;
+	fireBase: Sprite;
 	//@ts-ignore
   emitter: particles.Emitter;
 
 	constructor() {
+
+		// Main Container
 		this.main = new Container();
+
+		// Particles Container
 		this.particlesContainer = new Container();
+
+		// Bind this
     this.setup.bind(this);
-    this.clean.bind(this);
-  }
+		this.clean.bind(this);
 
-  setup(app: Application): void {
-
+		// Particle Emitter
 		this.emitter = new particles.Emitter(
 			this.particlesContainer,
-			[PIXI.Texture.from("particle1"),PIXI.Texture.from("particle2")],
+			[PIXI.Texture.from("particle3"),PIXI.Texture.from("particle5"),PIXI.Texture.from("particle2")],
 			{
 				"alpha": {
-					"start": 0.62,
+					"start": 0.69,
 					"end": 0
 				},
 				"scale": {
-					"start": 0.25,
-					"end": 0.75,
+					"start": 0.6,
+					"end": 0.95,
 					"minimumScaleMultiplier": 1
 				},
 				"color": {
-					"start": "#fff191",
-					"end": "#ff622c"
+					"start": "#f0ec73",
+					"end": "#e06d2a"
 				},
 				"speed": {
 					"start": 100,
-					"end": 300,
+					"end": 500,
 					"minimumSpeedMultiplier": 1
 				},
 				"acceleration": {
@@ -46,10 +51,10 @@ export class Part3 {
 				},
 				"maxSpeed": 0,
 				"startRotation": {
-					"min": 265,
+					"min": 270,
 					"max": 275
 				},
-				"noRotation": false,
+				"noRotation": true,
 				"rotationSpeed": {
 					"min": 50,
 					"max": 50
@@ -59,36 +64,46 @@ export class Part3 {
 					"max": 0.75
 				},
 				"blendMode": "normal",
-				"frequency": 0.001,
+				"frequency": 0.002,
 				"emitterLifetime": -1,
-				"maxParticles": 1000,
+				"maxParticles": 800,
 				"pos": {
 					"x": 0,
 					"y": 0
 				},
-				"addAtBack": false,
+				"addAtBack": true,
 				"spawnType": "circle",
 				"spawnCircle": {
 					"x": 0,
 					"y": 0,
-					"r": 10
+					"r": 26
 				}
 			}
+			
 			);
 
-		this.particlesContainer.x = app.screen.width / 2;
-    this.particlesContainer.y = app.screen.height / 2;
+		// Center to the screen
+		this.particlesContainer.scale.set(window.responsiveRatio);
+		this.particlesContainer.x = window.innerWidth / 2;
+		this.particlesContainer.y = window.innerHeight / 2 - this.particlesContainer.height/2;
 
-    this.particlesContainer.pivot.x = this.particlesContainer.width / 2;
-		this.particlesContainer.pivot.y = this.particlesContainer.height / 2;   
+		// Fire Base
+		this.fireBase = new PIXI.Sprite(PIXI.Texture.from("fireBase"));
+		this.fireBase.anchor.set(0.5);
+		this.fireBase.x = 0.5*window.innerWidth;
+		this.fireBase.y = 0.5*window.innerHeight + 40*window.responsiveRatio;
+		this.fireBase.scale.set(0.8*window.responsiveRatio);
+		this.fireBase.visible = false;
 		
+		this.main.addChild(this.fireBase);
 		this.main.addChild(this.particlesContainer);
+
 
 		// Calculate the current time
 		var elapsed = Date.now();
 				
 		// Update function every frame
-		var update = function(){
+		var update = function() : void {
 					
 			// Update the next frame
 			requestAnimationFrame(update);
@@ -99,23 +114,35 @@ export class Part3 {
 			// number of seconds since the last update
 			this.emitter.update((now - elapsed) * 0.001);
 			elapsed = now;
-			
 			// Should re-render the PIXI Stage
 			// renderer.render(stage);
 		}.bind(this);
 
-		// Start emitting
-		this.emitter.emit = true;
-		console.log("Done");
-		// Start the update
 		update();
+		
+		this.emitter.emit = false;
+  }
+
+  setup(): void {
+
+		// Start Emitting
+		this.fireBase.visible = true;
+		this.emitter.visible = true;
+		this.emitter.emit = true;
 
   }
 
   clean(): void {
 
-		if(this.emitter){
-			this.emitter.destroy();
+		// Stop Emitting
+		if(this.fireBase){
+			this.fireBase.visible = false;
 		}
+
+		if(this.emitter){
+			this.emitter.cleanup();
+			this.emitter.emit = false;
+		}
+		
   }
 }

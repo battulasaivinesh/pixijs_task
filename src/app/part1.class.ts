@@ -9,14 +9,29 @@ export class Part1 {
 	tweens: Array<PIXI.tween.Tween>;
 
   constructor() {
-    this.main = new Container();
+
+		// Main Container
+		this.main = new Container();
+		
+		// Bind this
     this.setup.bind(this);
-    this.clean.bind(this);
+		this.clean.bind(this);
+		
+		// Hook tweenManager Update Function
+		function animate() {
+
+      window.requestAnimationFrame(animate);
+			//@ts-ignore
+			PIXI.tweenManager.update();
+			
+		}
+		
+		animate();
   }
 
   setup(app: Application): void {
     
-
+		
 		this.tweens = [];
 		
     if (this.leftStack) {
@@ -30,6 +45,7 @@ export class Part1 {
     this.rightStack = new Container();
 		this.leftStack = new Container();
 
+		// Creates and tweens all the cards
     for(let i=0; i<144;i++){
 			const card = new Sprite(PIXI.Texture.from("card"));
 			card.anchor.set(0.5);
@@ -54,29 +70,22 @@ export class Part1 {
     
     this.main.addChild(this.rightStack);
    	this.main.addChild(this.leftStack);
-
-    function animate() {
-      // console.log("update");
-      window.requestAnimationFrame(animate);
-			// PIXI.actionManager.update(); // update actions
-			//@ts-ignore
-      PIXI.tweenManager.update();
-    }
-		animate();
 	
   }
 
   clean(): void {
-		for(let i=0; i<this.tweens.length; i++){
+
+		// Clear Current Scene
+		for (let i = 0; i < this.tweens.length; i++) {
 			this.tweens[i].stop();
 		}
 
 		this.tweens = [];
-		if(this.rightStack){
+		if (this.rightStack) {
 			this.rightStack.destroy();
 		}
 
-		if(this.leftStack){
+		if (this.leftStack) {
 			this.leftStack.destroy();
 		}
   }

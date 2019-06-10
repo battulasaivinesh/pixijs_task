@@ -29,7 +29,8 @@
     "pixi-particles": "^4.1.1",
     "pixi-timer": "^1.0.1",
     "pixi-tween": "^0.2.0",
-    "pixi.js": "4.7.1"
+    "pixi.js": "4.7.1",
+    "revolt-fx": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "9.6.0",
