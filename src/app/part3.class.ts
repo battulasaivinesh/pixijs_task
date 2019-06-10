@@ -28,7 +28,7 @@ export class Part3 {
 			[PIXI.Texture.from("particle3"),PIXI.Texture.from("particle2"),PIXI.Texture.from("particle1")],
 			{
 				"alpha": {
-					"start": 0.69,
+					"start": 1,
 					"end": 0
 				},
 				"scale": {
