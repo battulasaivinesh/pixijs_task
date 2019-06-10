@@ -116,7 +116,7 @@ class Game {
       button.interactive = true;
       button.buttonMode = true;
 
-      button.on('pointerup', function(index: number) : void {
+      button.on('pointerdown', function(index: number) : void {
         buttons.getChildAt(index).scale.set(window.responsiveRatio);
         this.UIContainer.visible = false;
         this.backButton.visible = true;
@@ -137,10 +137,6 @@ class Game {
             this.app.stage.addChild(this.scenes[2].main);
             break;
         }
-      }.bind(this,i))
-
-      button.on('pointerdown', function(index: number) : void {
-        buttons.getChildAt(index).scale.set(window.responsiveRatio*0.9);
       }.bind(this,i))
 
       buttons.addChild(button);
