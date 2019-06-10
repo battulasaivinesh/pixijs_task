@@ -25,15 +25,15 @@ export class Part3 {
 		// Particle Emitter
 		this.emitter = new particles.Emitter(
 			this.particlesContainer,
-			[PIXI.Texture.from("particle3"),PIXI.Texture.from("particle5"),PIXI.Texture.from("particle2")],
+			[PIXI.Texture.from("particle3"),PIXI.Texture.from("particle5"),PIXI.Texture.from("particle2"),PIXI.Texture.from("particle1")],
 			{
 				"alpha": {
 					"start": 0.69,
 					"end": 0
 				},
 				"scale": {
-					"start": 0.6,
-					"end": 0.95,
+					"start": 2,
+					"end": 0.5,
 					"minimumScaleMultiplier": 1
 				},
 				"color": {
@@ -41,7 +41,7 @@ export class Part3 {
 					"end": "#e06d2a"
 				},
 				"speed": {
-					"start": 100,
+					"start": 30,
 					"end": 500,
 					"minimumSpeedMultiplier": 1
 				},
@@ -61,12 +61,12 @@ export class Part3 {
 				},
 				"lifetime": {
 					"min": 0.1,
-					"max": 0.75
+					"max": 0.5
 				},
 				"blendMode": "normal",
-				"frequency": 0.002,
+				"frequency": 0.001,
 				"emitterLifetime": -1,
-				"maxParticles": 800,
+				"maxParticles": 10,
 				"pos": {
 					"x": 0,
 					"y": 0
@@ -76,9 +76,14 @@ export class Part3 {
 				"spawnCircle": {
 					"x": 0,
 					"y": 0,
-					"r": 26
+					"r": 18
 				}
 			}
+			
+			
+			
+			
+			
 			
 			);
 
@@ -91,7 +96,7 @@ export class Part3 {
 		this.fireBase = new PIXI.Sprite(PIXI.Texture.from("fireBase"));
 		this.fireBase.anchor.set(0.5);
 		this.fireBase.x = 0.5*window.innerWidth;
-		this.fireBase.y = 0.5*window.innerHeight + 40*window.responsiveRatio;
+		this.fireBase.y = 0.5*window.innerHeight + 80*window.responsiveRatio;
 		this.fireBase.scale.set(0.8*window.responsiveRatio);
 		this.fireBase.visible = false;
 		
@@ -143,6 +148,6 @@ export class Part3 {
 			this.emitter.cleanup();
 			this.emitter.emit = false;
 		}
-		
+
   }
 }
