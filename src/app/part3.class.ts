@@ -25,7 +25,7 @@ export class Part3 {
 		// Particle Emitter
 		this.emitter = new particles.Emitter(
 			this.particlesContainer,
-			[PIXI.Texture.from("particle3"),PIXI.Texture.from("particle5"),PIXI.Texture.from("particle2"),PIXI.Texture.from("particle1")],
+			[PIXI.Texture.from("particle3"),PIXI.Texture.from("particle2"),PIXI.Texture.from("particle1")],
 			{
 				"alpha": {
 					"start": 0.69,
