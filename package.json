@@ -2,8 +2,8 @@
   "name": "pixi-webpack-ts",
   "version": "5.0.1",
   "license": "CC-BY-NC-4.0",
-  "author": "Loïc TRUCHOT <loic.truchot.pro@gmail.com>",
-  "description": "A pre installed environnement to work with pixi.js with webpack & typescript",
+  "author": "Battula Sai Vinesh <vineshbattula@gmail.com>",
+  "description": "",
   "engines": {
     "node": "~8.11.0",
     "npm": "~5.8.0"
