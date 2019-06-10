@@ -33,7 +33,7 @@ export class Part3 {
 				},
 				"scale": {
 					"start": 2,
-					"end": 0.5,
+					"end": 0.7,
 					"minimumScaleMultiplier": 1
 				},
 				"color": {
@@ -64,7 +64,7 @@ export class Part3 {
 					"max": 0.5
 				},
 				"blendMode": "normal",
-				"frequency": 0.001,
+				"frequency": 0.05,
 				"emitterLifetime": -1,
 				"maxParticles": 10,
 				"pos": {
@@ -79,6 +79,7 @@ export class Part3 {
 					"r": 18
 				}
 			}
+			
 			
 			
 			
